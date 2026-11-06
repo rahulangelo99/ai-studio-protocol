@@ -32,12 +32,13 @@ Expected output: `Version history: on`, `Studio ready: …/AI-Studio`, and `Phon
 cd ~/AI-Studio && ls protocol && head -3 studio.local.md && git log --oneline -1
 ```
 - [ ] 6 files in `protocol/`
+- [ ] `.claude/settings.json` and `.claude/hooks/inbox.sh` exist (they deliver Rahul's notes automatically)
 - [ ] `studio.local.md` shows their letter and inbox channel
 - [ ] git shows a recent "Studio rules updated" commit
 - [ ] Message line works: run this for 10 seconds while the person sends any test message from the ntfy app to their own channel, and confirm it printed:
   `curl -sN --max-time 10 "https://ntfy.sh/<PREFIX>-<letter>/raw" | grep --line-buffered -v '^[[:space:]]*$'`
 
 ## Step 5: Hand over
-Tell the person: "Studio updated. Start a **new** Claude Code session in the AI-Studio folder so the new rules load." Summarise what changed in 3 bullets (see `CHANGELOG.md`).
+Tell the person: "Studio updated. Start a **new** Claude Code session in the AI-Studio folder so the new rules load." If Claude Code asks whether to trust the folder or allow its hooks, they should say yes: that's what delivers Rahul's notes. In the browser tab that opens (ntfy), click the bell icon and **Allow** notifications. Summarise what changed in 3 bullets (see `CHANGELOG.md`).
 
 If any step fails, stop, show the exact error, and explain it in plain words. Don't improvise workarounds that install software or change settings without asking.

@@ -12,6 +12,7 @@ Claude Code loads `CLAUDE.md` automatically. The setup script installs these rul
 | `protocol/04-files-and-tracking.md` | Folder per idea, logs, versions, git history, never delete |
 | `protocol/05-messages.md` | Optional ntfy message line with a facilitator |
 | `protocol/06-skills-and-tasks.md` | Picking the right tool per task, outside services, usage budget |
+| `studio-files/.claude/` | Hooks that deliver facilitator messages automatically |
 | `guides/` | For the person: getting started, what AI can do |
 
 ## Install

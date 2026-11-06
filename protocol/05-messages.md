@@ -2,6 +2,10 @@
 
 Channel names are in `studio.local.md`. That file is private: never print it into public files, pages, commits pushed online, or messages to anyone else.
 
+## How messages arrive (two layers)
+1. **Hooks (automatic, always on).** The studio's `.claude/settings.json` runs `.claude/hooks/inbox.sh` at session start and every time the person sends a message. New notes appear in your context as `[Message line] New message(s)…`. Show them as instructed. At session start the hook also opens the inbox in the browser (at most every 4 hours).
+2. **Live listener (real time while idle).** Started by you, as below, so notes arrive even when the person isn't typing.
+
 ## At the start of every session
 Start a background Monitor on the person's inbox channel (timeout 30 min, re-arm every time it expires). Works in bash on Windows (Git Bash) and Mac; each line it prints is one message from Rahul:
 ```

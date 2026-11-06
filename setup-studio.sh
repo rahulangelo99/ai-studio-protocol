@@ -34,8 +34,16 @@ elif [ ! -f "$ROOT/studio.local.md" ]; then
   printf "# Private studio settings\n- Person: %s\n- Message line: not set up (no channel prefix given). Skip protocol 05.\n" "$ME" > "$ROOT/studio.local.md"
 fi
 
+# Hooks: Claude Code itself delivers messages at session start and on every prompt
+mkdir -p "$ROOT/.claude/hooks"
+cp "$HERE/studio-files/.claude/hooks/inbox.sh" "$ROOT/.claude/hooks/inbox.sh"
+if [ -f "$ROOT/.claude/settings.json" ] && ! grep -q 'inbox.sh' "$ROOT/.claude/settings.json"; then
+  mv "$ROOT/.claude/settings.json" "$ROOT/.claude/settings.backup.json"
+fi
+cp "$HERE/studio-files/.claude/settings.json" "$ROOT/.claude/settings.json"
+
 [ -f "$ROOT/IDEA-LOG.md" ] || printf "# IDEA LOG (%s)\n\n| # | Idea | Status | Folder |\n|---|---|---|---|\n" "$ME" > "$ROOT/IDEA-LOG.md"
-printf "studio.local.md\n.DS_Store\nThumbs.db\ndesktop.ini\n" > "$ROOT/.gitignore"
+printf "studio.local.md\n.claude/inbox.state\n.DS_Store\nThumbs.db\ndesktop.ini\n" > "$ROOT/.gitignore"
 
 # Version history (git). On macOS, /usr/bin/git is a stub until developer tools are installed.
 if git --version >/dev/null 2>&1; then
