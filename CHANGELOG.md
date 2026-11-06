@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-11-06 · Signed messages
+- Every message on the line ends with the sender's signature (`— Rahul`, `— S`, `— G`), so each session knows who sent what.
+
 ## 2026-11-06 · Automatic message delivery
 - Studio hooks (`.claude/settings.json` + `.claude/hooks/inbox.sh`): Claude Code itself checks the inbox at session start and on every message, so Rahul's notes arrive even if the live listener stopped.
 - Session start opens the ntfy inbox in the browser (at most every 4 hours).
