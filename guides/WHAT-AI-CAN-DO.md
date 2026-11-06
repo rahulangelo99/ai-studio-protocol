@@ -58,7 +58,7 @@ This list shows how much is possible, so you aim bigger.
 ---
 
 ## Three rules that make you fast
-1. **Write like you talk.** Typing first; Rahul will switch you to voice (tap 🌐/Fn twice) when you're ready. Messy is fine, the AI sharpens it.
+1. **Write like you talk.** Typing first; Rahul will switch you to voice (Windows: Win+H · Mac: tap 🌐 twice) when you're ready. Messy is fine, the AI sharpens it.
 2. **Say the dream first, the limits second.** "I want X. Budget is Y. Deadline is Z."
 3. **Ask for a first version now.** You react to something real faster than you can describe it perfectly.
 

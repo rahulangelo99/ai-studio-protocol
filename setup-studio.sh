@@ -1,9 +1,10 @@
-#!/bin/zsh
-# Creates or refreshes ~/AI-Studio:   zsh setup-studio.sh S   (or G)
+#!/usr/bin/env bash
+# Creates or refreshes ~/AI-Studio.   bash setup-studio.sh S [channel-prefix]
+# Works on Windows (Git Bash, which Claude Code uses) and macOS/Linux.
 # Never touches the person's idea folders. Re-run anytime to update the rules.
-ME="${1:u}"; me="${1:l}"
-[[ -z "$ME" || ! "$ME" =~ '^[A-Z]$' ]] && { echo "usage: zsh setup-studio.sh <one letter, e.g. S>"; exit 1; }
-HERE="${0:A:h}"
+ME=$(printf '%s' "$1" | tr '[:lower:]' '[:upper:]'); me=$(printf '%s' "$1" | tr '[:upper:]' '[:lower:]')
+case "$ME" in [A-Z]) ;; *) echo "usage: bash setup-studio.sh <one letter, e.g. S> [channel-prefix]"; exit 1 ;; esac
+HERE="$(cd "$(dirname "$0")" && pwd)"
 ROOT="${STUDIO_ROOT:-$HOME/AI-Studio}"
 mkdir -p "$ROOT" || exit 1
 
@@ -12,14 +13,16 @@ rm -rf "$ROOT/protocol" "$ROOT/guides"
 cp -R "$HERE/protocol" "$HERE/guides" "$ROOT/"
 
 # CLAUDE.md: write if missing or from an older kit (no protocol imports)
-if [[ ! -f "$ROOT/CLAUDE.md" ]] || ! grep -q '@protocol/' "$ROOT/CLAUDE.md"; then
-  [[ -f "$ROOT/CLAUDE.md" ]] && mv "$ROOT/CLAUDE.md" "$ROOT/CLAUDE.old.md"
+if [ ! -f "$ROOT/CLAUDE.md" ] || ! grep -q '@protocol/' "$ROOT/CLAUDE.md"; then
+  [ -f "$ROOT/CLAUDE.md" ] && mv "$ROOT/CLAUDE.md" "$ROOT/CLAUDE.old.md"
   sed "s/{{ME}}/$ME/g" "$HERE/CLAUDE.template.md" > "$ROOT/CLAUDE.md"
 fi
 
-# Private settings: message channels come from channels.env (in the private kit, never in the public repo)
-if [[ -f "$HERE/channels.env" ]]; then
-  source "$HERE/channels.env"
+# Private settings: channel prefix from 2nd argument or channels.env (never in the public repo)
+PHONE=""
+PREFIX=$(printf '%s' "$2" | tr -cd 'A-Za-z0-9-')
+[ -z "$PREFIX" ] && [ -f "$HERE/channels.env" ] && PREFIX=$(sed -n 's/^PREFIX=//p' "$HERE/channels.env" | tr -cd 'A-Za-z0-9-')
+if [ -n "$PREFIX" ]; then
   cat > "$ROOT/studio.local.md" <<EOF
 # Private studio settings: never share, publish or push online
 - Person: $ME
@@ -27,25 +30,31 @@ if [[ -f "$HERE/channels.env" ]]; then
 - Rahul's channel (I write here): $PREFIX-mc
 EOF
   PHONE="$PREFIX-$me"
-elif [[ ! -f "$ROOT/studio.local.md" ]]; then
-  printf "# Private studio settings\n- Person: %s\n- Message line: not set up (no channels.env in kit). Skip protocol 05.\n" "$ME" > "$ROOT/studio.local.md"
+elif [ ! -f "$ROOT/studio.local.md" ]; then
+  printf "# Private studio settings\n- Person: %s\n- Message line: not set up (no channel prefix given). Skip protocol 05.\n" "$ME" > "$ROOT/studio.local.md"
 fi
 
-[[ -f "$ROOT/IDEA-LOG.md" ]] || printf "# IDEA LOG (%s)\n\n| # | Idea | Status | Folder |\n|---|---|---|---|\n" "$ME" > "$ROOT/IDEA-LOG.md"
-printf "studio.local.md\n.DS_Store\n" > "$ROOT/.gitignore"
+[ -f "$ROOT/IDEA-LOG.md" ] || printf "# IDEA LOG (%s)\n\n| # | Idea | Status | Folder |\n|---|---|---|---|\n" "$ME" > "$ROOT/IDEA-LOG.md"
+printf "studio.local.md\n.DS_Store\nThumbs.db\ndesktop.ini\n" > "$ROOT/.gitignore"
 
-if xcode-select -p >/dev/null 2>&1 && command -v git >/dev/null; then
+# Version history (git). On macOS, /usr/bin/git is a stub until developer tools are installed.
+if git --version >/dev/null 2>&1; then
   cd "$ROOT"
-  [[ -d .git ]] || git init -q
+  [ -d .git ] || git init -q
   git config user.name >/dev/null || git config user.name "$ME"
   git config user.email >/dev/null || git config user.email "$me@ai-studio.local"
   git add -A && git commit -qm "Studio rules updated" >/dev/null 2>&1
   echo "Version history: on"
 else
-  echo "Version history: OFF. Run 'xcode-select --install' once, then re-run this script."
+  echo "Version history: OFF. Install Git (Windows: https://git-scm.com/download/win; Mac: run 'xcode-select --install'), then re-run this script."
 fi
-command -v jq >/dev/null || echo "Note: jq missing. The message line needs it ('brew install jq')."
+
 echo "Studio ready: $ROOT"
-[[ -n "$PHONE" ]] && echo "Phone (ntfy app) channel: $PHONE"
-if [[ -z "$STUDIO_ROOT" ]]; then open "$ROOT"; fi
+[ -n "$PHONE" ] && echo "Phone (ntfy app) channel: $PHONE"
+if [ -z "$STUDIO_ROOT" ]; then
+  if command -v explorer.exe >/dev/null 2>&1; then
+    explorer.exe "$(cygpath -w "$ROOT" 2>/dev/null || echo "$ROOT")" >/dev/null 2>&1
+  elif command -v open >/dev/null 2>&1; then open "$ROOT"
+  fi
+fi
 exit 0

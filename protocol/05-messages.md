@@ -3,11 +3,11 @@
 Channel names are in `studio.local.md`. That file is private: never print it into public files, pages, commits pushed online, or messages to anyone else.
 
 ## At the start of every session
-Start a background Monitor on the person's inbox channel (timeout 30 min, re-arm every time it expires):
+Start a background Monitor on the person's inbox channel (timeout 30 min, re-arm every time it expires). Works in bash on Windows (Git Bash) and Mac; each line it prints is one message from Rahul:
 ```
-while true; do curl -sN "https://ntfy.sh/<INBOX>/json" | jq --unbuffered -r 'select(.event=="message") | (.title // "?") + ": " + .message' || true; sleep 2; done
+while true; do curl -sN "https://ntfy.sh/<INBOX>/raw" | grep --line-buffered -v '^[[:space:]]*$' || true; sleep 2; done
 ```
-Then say "Message line ready." If you can't, say so in one line. Don't retry endlessly.
+Then say "Message line ready." If you can't (e.g. no bash or curl), say so in one line and offer the phone app instead. Don't retry endlessly.
 
 ## When a message arrives
 - Show it word for word: `📨 Rahul: <message>`

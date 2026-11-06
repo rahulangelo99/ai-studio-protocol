@@ -16,10 +16,10 @@ Claude Code loads `CLAUDE.md` automatically. The setup script installs these rul
 
 ## Install
 ```bash
-zsh setup-studio.sh S
+bash setup-studio.sh S
 ```
-Then start Claude Code sessions in `~/AI-Studio`. Re-run anytime to update the rules; idea folders are never touched.
+Works on Windows (Git Bash, used by Claude Code) and Mac. Then start Claude Code sessions in `~/AI-Studio` (Windows: `C:\Users\<you>\AI-Studio`). Re-run anytime to update the rules; idea folders are never touched.
 
-The message line needs a private `channels.env` (`PREFIX=...`) next to the script. It's not in this repo on purpose: anyone who knows the channel names could post into the line.
+The message line needs a private channel prefix, given as a second argument (`bash setup-studio.sh S <prefix>`) or in a `channels.env` file (`PREFIX=...`) next to the script. It's not in this repo on purpose: anyone who knows the channel names could post into the line.
 
 Precedence when rules conflict: safety & permissions → accuracy → the person's request → everything else.

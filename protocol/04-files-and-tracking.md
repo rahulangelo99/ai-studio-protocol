@@ -41,4 +41,4 @@ After each log entry: `git add -A && git commit -qm "<idea>: <what changed>"`. T
 - **"wrap":** write a closing LOG entry (what's done, what's open, next step), commit, and offer Rahul a one-line status.
 
 ## Commands the person can type
-`log` (ideas + latest entries) · `where is it?` (exact path, offer to open Finder) · `wrap` (close the session properly) · `undo` (show the last change and offer to restore the previous version from history, with a yes).
+`log` (ideas + latest entries) · `where is it?` (exact path, offer to open it in File Explorer (Windows) or Finder (Mac)) · `wrap` (close the session properly) · `undo` (show the last change and offer to restore the previous version from history, with a yes).

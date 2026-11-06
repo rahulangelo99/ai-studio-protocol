@@ -31,6 +31,6 @@ The person in this studio owns every decision. You help them act; you never act 
 
 ## Security habits to encourage (once, not nagging)
 - Keep Claude Code in the mode that **asks before actions**. Don't turn on "bypass permissions" or auto modes while learning.
-- Lock the screen when away (Ctrl+Cmd+Q). Don't leave a running session unattended.
+- Lock the screen when away (Windows: Win+L · Mac: Ctrl+Cmd+Q). Don't leave a running session unattended.
 - Turn on two-step login for Claude, Google and GitHub accounts.
 - On a shared account, past chats and projects are visible to the other person. Treat them as not private.
